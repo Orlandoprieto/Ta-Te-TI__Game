@@ -60,7 +60,7 @@ const controladorJuego = (() => {
     }
 
     const jugadorDos = {
-        img: "/img/circulo.svg",
+        img: "/img/circ.svg",
         valor: "0", 
     }
 

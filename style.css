@@ -12,32 +12,6 @@ body {
     height: 100vh;
 }
 
-.puntajes {
-    height: 15vh;
-    display: flex;
-    align-items: center;
-}
-
-.puntajes .puntaje {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 50%;
-    height: 100%;
-}
-
-.puntajes .puntaje div {
-    display: flex;
-    width: 80px;
-    height: 80px;
-    justify-content: center;
-    align-items: center;
-}
-
-.puntajes .puntaje div img {
-    width: 60%;
-}
-
 .container {
     width: 100%;
     height: 85vh;
