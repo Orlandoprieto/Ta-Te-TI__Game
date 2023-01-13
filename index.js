@@ -7,7 +7,8 @@ const tableroDOM = () => {
         casillero.setAttribute("id", id++);
     })
 
-    const ocuparCasillero = (casillero, {img, valor}) => {
+    const ocuparCasillero = (idCasillero, {img, valor}) => {
+        const casillero = document.getElementById(idCasillero);
         casillero.value = valor;
         casillero.children[0].src = img;
     }
@@ -27,9 +28,7 @@ const tableroDOM = () => {
 }
 
 
-const verificarSiHayGanador = ( {valor} ) => {
-
-    const { casilleros } = tableroDOM();
+const verificarSiHayGanador = () => {
 
     const direcciones = [
         [0, 1, 2],
@@ -42,54 +41,65 @@ const verificarSiHayGanador = ( {valor} ) => {
         [2, 4, 6]
     ]
 
-    for (let direccion of direcciones) {
-        if (casilleros[direccion[0]].value == valor && casilleros[direccion[1]].value == valor && casilleros[direccion[2]].value == valor) {
-            return true;
+    for(let direccion of direcciones){
+
+        let patron = "";
+
+        for(let id of direccion){
+            const valor = document.getElementById(id).value;
+            patron += valor;
         }
+
+        
+        if(patron == "xxx"){
+            console.log("x");
+            break 
+        } else if (patron == "ooo"){
+            console.log("o")
+            break
+        }
+    }
+
+}
+
+
+const jugadorCPU =  () => {
+    const { casilleros, ocuparCasillero } = tableroDOM();
+    const casillerosDisponibles = casilleros.filter(casillero => casillero.value == "");
+    let index = Math.ceil(Math.random() * (casillerosDisponibles.length - 1));
+    
+    const CPU = { img: "./img/circ.svg", valor: "o" }
+
+    if (casillerosDisponibles != 0) {
+        const idCasillero = casillerosDisponibles[index].id;
+        ocuparCasillero(idCasillero, CPU)
+        
     }
 }
 
 
-const controladorJuego = (() => {
-    
-    const { casilleros, limpiar, ocuparCasillero } = tableroDOM();
+const jugador = (idcasillero) => {
+    const { ocuparCasillero } = tableroDOM();
 
-    const jugadorUno = {
-        img: "./img/cruz.svg",
-        valor: "x", 
-    }
+    const jugador = { img: "./img/cruz.svg", valor: "x" };
 
-    const jugadorDos = {
-        img: "/img/circ.svg",
-        valor: "0", 
-    }
+    ocuparCasillero(idcasillero, jugador);
+}
 
-    let turno = jugadorUno;
-    let ronda = 0;
+
+const controladorJuego = ( () => {
+
+    const { casilleros } = tableroDOM()
+
     casilleros.forEach(casillero => {
-        casillero.onclick = function () {
 
-            
+        casillero.onclick =   function (){
 
-            const casillero = document.getElementById(this.id);
-
-            if (casillero.value == "") {
-                ronda++;
-                
-                ocuparCasillero(casillero, turno);
-
-                if (verificarSiHayGanador(turno) ) { 
-                    Swal.fire(`${turno.valor} es el ganador de la ronda`);
-                    limpiar();       
-                    ronda = 0; 
-                    turno.victorias++;
-
-                } else if (ronda == 9) {
-                    Swal.fire(`Esta ronda termino en empate`);
-                    limpiar();
-                } 
-                    
-                turno = (turno == jugadorUno) ? jugadorDos : jugadorUno;
+            const id = this.id;
+            if(casillero.value == ""){
+                jugador(id);
+                jugadorCPU();
+                verificarSiHayGanador()
             }
         }
     })
