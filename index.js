@@ -41,25 +41,24 @@ const verificarSiHayGanador = () => {
         [2, 4, 6]
     ]
 
+    let ganador; 
     for(let direccion of direcciones){
 
         let patron = "";
-
         for(let id of direccion){
             const valor = document.getElementById(id).value;
             patron += valor;
         }
 
-        
         if(patron == "xxx"){
-            console.log("x");
-            break 
+            ganador = "x"
+            
         } else if (patron == "ooo"){
-            console.log("o")
-            break
+            ganador = "o"
         }
     }
 
+    return ganador;
 }
 
 
@@ -73,33 +72,43 @@ const jugadorCPU =  () => {
     if (casillerosDisponibles != 0) {
         const idCasillero = casillerosDisponibles[index].id;
         ocuparCasillero(idCasillero, CPU)
-        
     }
 }
 
 
 const jugador = (idcasillero) => {
     const { ocuparCasillero } = tableroDOM();
-
     const jugador = { img: "./img/cruz.svg", valor: "x" };
-
     ocuparCasillero(idcasillero, jugador);
 }
 
 
 const controladorJuego = ( () => {
 
-    const { casilleros } = tableroDOM()
+    const { casilleros, limpiar } = tableroDOM()
 
+    let turno = 0;
     casilleros.forEach(casillero => {
-
-        casillero.onclick =   function (){
-
+        casillero.onclick =  function (){
             const id = this.id;
-            if(casillero.value == ""){
+
+            if(casillero.value == ""){ 
                 jugador(id);
                 jugadorCPU();
-                verificarSiHayGanador()
+                turno = turno + 2;
+                console.log(turno)
+                
+                let ganador = verificarSiHayGanador();
+                if (ganador != undefined) {
+                    Swal.fire(`El ganador es ${ ganador }`);
+                    limpiar();
+                    turno = 0;
+
+                } else if(turno > 9){
+                    Swal.fire(`El juego termino en empate`);
+                    limpiar();
+                    turno = 0;
+                }
             }
         }
     })
