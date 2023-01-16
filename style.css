@@ -14,15 +14,15 @@ body {
 
 .container {
     width: 100%;
-    height: 85vh;
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
 .container #tablero {
-    height: 700px;
-    width: 700px;
+    height: 500px;
+    width: 500px;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
